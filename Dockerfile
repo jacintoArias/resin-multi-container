@@ -1,4 +1,4 @@
-FROM resin/raspberrypi2-debian
+FROM resin/raspberrypi3-debian
 MAINTAINER justin@dray.be
 
 # Let's start with some basic stuff.
@@ -17,7 +17,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 37BBEE3F7AD95B3F &&
 
 COPY ./wrapdocker /usr/local/bin/wrapdocker
 
-COPY ./apps /apps
+RUN mkdir /apps
 WORKDIR /apps
 
 # Define additional metadata for our image.
