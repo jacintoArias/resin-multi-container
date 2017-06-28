@@ -4,7 +4,7 @@ containers=$(find * -maxdepth 0 -type d)
 keep_alive() {
 	if [[ $(docker-compose ps 2>&1 | tail -n+3 | grep -v Up | wc -l) -ne 0 ]]; then
 		echo "A container has exited. Restarting docker stack."
-		docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN
+		./docker-login.sh
 		docker-compose down
 		docker-compose up &
 	fi
@@ -17,7 +17,7 @@ if ! docker info &>/dev/null; then
 	wrapdocker echo
 fi
 
-docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY_HOST
+./docker-login.sh
 docker-compose pull
 docker rm -v $(docker ps -a -q -f status=exited 2>/dev/null) &>/dev/null || :
 docker rmi $(docker images -f "dangling=true" -q 2>/dev/null) &>/dev/null || :
